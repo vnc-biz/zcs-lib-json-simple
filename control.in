@@ -1,0 +1,7 @@
+Package: @PACKAGE@
+Version: @VERSION@
+Section: base
+Priority: optional
+Architecture: All
+Maintainer: Enrico Weigelt <enrico.weigelt@vnc.biz>
+Description: @DESCRIPTION@

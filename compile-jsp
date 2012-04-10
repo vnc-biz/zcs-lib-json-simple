@@ -1,0 +1,26 @@
+#!/bin/bash
+
+[ "$JAVA"  ] || JAVA=java
+[ "$JAVAC" ] || JAVAC=javac
+[ "$JSPC_TMP" ] || JSPC_TMP=_jspc_tmp
+
+JDIR=/usr/share/java
+CLASSPATH=$CLASSPATH:$JDIR/jasper-5.5.26.jar:$JDIR/servlet-api.jar:$JDIR/commons-logging.jar:$JDIR/ant.jar:$JDIR/jsp-api.jar:$JDIR/commons-el.jar
+
+jspc() {
+    java -cp "$CLASSPATH" org.apache.jasper.JspC "$@"
+}
+
+rm -Rf $JSPC_TMP
+
+jspc -uriroot . -d $JSPC_TMP "$1"
+
+JAVA_FILES=`find $JSPC_TMP -name "*.java"`
+
+if [ ! "$JAVA_FILES" ]; then
+    echo "$0: jspc did not produce any output files. something went wrong"
+    echo "JAVA_FILES=$JAVA_FILES"
+    exit 1
+fi
+
+javac -Xlint:unchecked -classpath "$CLASSPATH:$JSP_CLASSPATH" $JAVA_FILES && rm -Rf $JSPC_TMP
