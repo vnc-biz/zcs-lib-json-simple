@@ -1,0 +1,5 @@
+/image
+/src/lib-json-simple/classes
+/src/lib-json-simple/zcs-lib-json-simple.jar
+/zimlets.list
+*.deb

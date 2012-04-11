@@ -1,5 +1,10 @@
 VERSION=1.1.1.2
 PACKAGE=zcs-lib-json-simple
+MAINTAINER=Enrico Weigelt <enrico.weigelt@vnc.biz>
+SECTION=base
+ARCHITECTURE=All
+PRIORITY=optional
+DEPENDS=__NONE__
 DESCRIPTION=Simple JSON library
 DISTPREFIX=$(TOPDIR)/dist
 DISTDIR=$(DISTPREFIX)/$(PACKAGE)-$(VERSION)
@@ -8,3 +13,5 @@ JAVA?=java
 JAR?=jar
 JAVAC?=javac
 IMAGE_ROOT=$(TOPDIR)/image
+REDMINE_UPLOAD_URL=https://redmine.vnc.biz/redmine/
+REDMINE_UPLOAD_PROJECT=zcs-lib-json-simple
