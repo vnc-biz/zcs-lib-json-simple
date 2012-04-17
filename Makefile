@@ -4,8 +4,10 @@ include $(TOPDIR)/conf.mk
 
 DEBDIR=$(IMAGE_ROOT)/DEBIAN
 DEBFILE=$(PACKAGE)_$(VERSION)_$(ARCHITECTURE).deb
+ZMPKG?=zmpkg
+PARSED_DEPENDS=`echo "$(DEPENDS)" | sed -e 's~,~ ~g; s~__NONE__~~g'`
 
-all:	$(DEBFILE)
+all:	check-depend $(DEBFILE)
 
 prepare:
 	@echo -n > $(TOPDIR)/zimlets.list
@@ -45,3 +47,11 @@ upload:	all
 		-w $(REDMINE_UPLOAD_PASSWORD)	\
 		-p $(REDMINE_UPLOAD_PROJECT)	\
 		-d "$(DEBFILE)"
+
+check-depend:
+	@for dep in $(PARSED_DEPENDS) ; do			\
+		if ! $(ZMPKG) check-installed "$$dep" ; then	\
+			echo "Missing dependency: $$dep" >&2;	\
+			exit 1 ;				\
+		fi ;						\
+	done
