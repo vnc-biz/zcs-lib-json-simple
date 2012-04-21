@@ -29,16 +29,16 @@ public class JSONParser {
 	public static final int S_IN_PAIR_VALUE=5;
 	public static final int S_END=6;
 	public static final int S_IN_ERROR=-1;
-	
-	private LinkedList handlerStatusStack;
+
+	private LinkedList<Integer> handlerStatusStack;
 	private Yylex lexer = new Yylex((Reader)null);
 	private Yytoken token = null;
 	private int status = S_INIT;
-	
-	private int peekStatus(LinkedList statusStack){
+
+	private int peekStatus(LinkedList<Integer> statusStack){
 		if(statusStack.size()==0)
 			return -1;
-		Integer status=(Integer)statusStack.getFirst();
+		Integer status=statusStack.getFirst();
 		return status.intValue();
 	}
 	
@@ -110,7 +110,7 @@ public class JSONParser {
 	 */
 	public Object parse(Reader in, ContainerFactory containerFactory) throws IOException, ParseException{
 		reset(in);
-		LinkedList statusStack = new LinkedList();
+		LinkedList<Integer> statusStack = new LinkedList<Integer>();
 		LinkedList valueStack = new LinkedList();
 		
 		try{
@@ -329,18 +329,18 @@ public class JSONParser {
 	public void parse(Reader in, ContentHandler contentHandler, boolean isResume) throws IOException, ParseException{
 		if(!isResume){
 			reset(in);
-			handlerStatusStack = new LinkedList();
+			handlerStatusStack = new LinkedList<Integer>();
 		}
 		else{
 			if(handlerStatusStack == null){
 				isResume = false;
 				reset(in);
-				handlerStatusStack = new LinkedList();
+				handlerStatusStack = new LinkedList<Integer>();
 			}
 		}
-		
-		LinkedList statusStack = handlerStatusStack;	
-		
+
+		LinkedList<Integer> statusStack = handlerStatusStack;
+
 		try{
 			do{
 				switch(status){

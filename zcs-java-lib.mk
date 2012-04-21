@@ -57,5 +57,9 @@ clean:
 $(JAR_FILE_NAME):
 	@mkdir -p `dirname "$@"`
 	@mkdir -p classes
-	@if [ "$(IMPORT_CP)" ]; then $(JAVAC) -d classes -cp $(IMPORT_CP) $(SRCS) ; else $(JAVAC) -d classes $(SRCS) ; fi
+	@if [ "$(IMPORT_CP)" ]; then \
+		$(JAVAC) -Xlint:unchecked -d classes -cp $(IMPORT_CP) $(SRCS) ; \
+	else \
+		$(JAVAC) -Xlint:unchecked -d classes $(SRCS) ; \
+	fi
 	@$(JAR) cvf $(JAR_FILE_NAME) -C classes .
