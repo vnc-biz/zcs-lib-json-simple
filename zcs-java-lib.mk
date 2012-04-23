@@ -15,7 +15,9 @@ ZIMLET_ADMIN_JARDIR=mailboxd/webapps/zimbraAdmin/WEB-INF/lib
 ZIMLET_SERVICE_JARDIR=mailboxd/webapps/service/WEB-INF/lib
 ZIMLET_LIB_JARDIR=lib/jars
 
-build:	check-1	install
+all:	check-1	build
+
+build:	install
 
 ifeq ($(ZIMBRA_BUILD_ROOT),)
 ZIMBRA_BUILD_ROOT=$(HOME)
@@ -29,6 +31,7 @@ check-1:
 endif
 
 install:	$(JAR_FILE_NAME)
+	@true
 ifeq ($(INSTALL_USER),y)
 	@mkdir -p $(IMAGE_ROOT)/$(ZIMLET_USER_JARDIR)
 	@cp $(JAR_FILE_NAME) $(IMAGE_ROOT)/$(ZIMLET_USER_JARDIR)
@@ -57,9 +60,5 @@ clean:
 $(JAR_FILE_NAME):
 	@mkdir -p `dirname "$@"`
 	@mkdir -p classes
-	@if [ "$(IMPORT_CP)" ]; then \
-		$(JAVAC) -Xlint:unchecked -d classes -cp $(IMPORT_CP) $(SRCS) ; \
-	else \
-		$(JAVAC) -Xlint:unchecked -d classes $(SRCS) ; \
-	fi
+	@if [ "$(IMPORT_CP)" ]; then $(JAVAC) -d classes -cp $(IMPORT_CP) $(SRCS) ; else $(JAVAC) -d classes $(SRCS) ; fi
 	@$(JAR) cvf $(JAR_FILE_NAME) -C classes .
